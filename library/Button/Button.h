@@ -87,13 +87,11 @@ class Button {
         );
 
     private:
-        uint8_t _GPIO; // Hardware configuration pin.
+        uint8_t _GPIO; // Internal hardware configuration pin.
         bool _wasPressed = false; // Internal flag indicating previous press state.
-        unsigned long _pressStartTime = 0; // Timestamp when the button was pressed.
-
-        // For double press
-        unsigned long _lastReleaseTime;
-        uint8_t _pressCount = 0;
+        unsigned long _pressStartTime = 0; // Internal timestamp for button press.
+        unsigned long _lastReleaseTime; // Internal timestamp for button release.
+        uint8_t _pressCount = 0; // Internal button press count.
 
         std::function<void(bool)> _onToggle; // Internal callback for onToggle.
         std::function<void()> _onSinglePress; // Internal callback for onSinglePress.

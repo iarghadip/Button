@@ -1,11 +1,12 @@
 #include <Button.h>
 
-Button count(8);
-Button reset(9);
+Button count(8); // Button connected with GPIO 8 and GND of ESP32.
+Button reset(9); // Button connected with GPIO 9 and GND of ESP32.
 
 unsigned int value = 0;
 
 void setOnPress() {
+  // Invoke the callback functions to handle presses.
   count.onSinglePress([]() {
     value++;
     Serial.println("count.onSinglePress: " + String(value));
@@ -26,12 +27,12 @@ void setOnPress() {
 
 void setup() {
   Serial.begin(115200);
-  count.begin();
-  reset.begin();
+  count.begin(); // Invoke the begin function once for calibration.
+  reset.begin(); // Invoke the begin function once for calibration.
   setOnPress();
 }
 
 void loop() {
-  count.async();
-  reset.async();
+  count.async(); // Invoke the async function inside the RTOS loop.
+  reset.async(); // Invoke the async function inside the RTOS loop.
 }
