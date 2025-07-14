@@ -1,6 +1,14 @@
 #include <Button.h>
 
 /**
+ * @brief Default constructor for the Button class.
+ *
+ * Constructs a Button object without initializing the GPIO pin.
+ * You must call begin() or use the parameterized constructor before use.
+ */
+Button::Button() {}
+
+/**
  * @brief Construct a new Button object.
  * @param GPIO The GPIO pin number to which the button is connected.
  */
@@ -22,6 +30,19 @@ void Button::begin() {
         _wasPressed = digitalRead(_GPIO) == LOW;
         _onToggle(_wasPressed);
     }
+}
+
+/**
+ * @brief Initialize the button with a specific GPIO pin and configure hardware.
+ * @param GPIO The GPIO pin number to which the button is connected.
+ *
+ * Assigns the GPIO pin and calls begin() to configure the hardware and internal state.
+ */
+void Button::begin(
+    uint8_t GPIO
+) {
+    this->_GPIO = GPIO;
+    this->begin();
 }
 
 /**

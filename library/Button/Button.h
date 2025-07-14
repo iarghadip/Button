@@ -12,6 +12,15 @@
  */
 class Button {
     public:
+
+        /**
+         * @brief Default constructor for the Button class.
+         *
+         * Constructs a Button object without initializing the GPIO pin.
+         * You must call begin() or use the parameterized constructor before use.
+         */
+        Button();
+        
         /**
          * @brief Construct a new Button object.
          * @param GPIO The GPIO pin number to which the button is connected.
@@ -27,6 +36,16 @@ class Button {
          * Also immediately calls the toggle callback with the initial state if registered.
          */
         void begin();
+
+        /**
+         * @brief Initialize the button with a specific GPIO pin and configure hardware.
+         * @param GPIO The GPIO pin number to which the button is connected.
+         *
+         * Assigns the GPIO pin and calls begin() to configure the hardware and internal state.
+         */
+        void begin(
+            uint8_t GPIO
+        );
 
         /**
          * @brief Processes button state and triggers registered event callbacks.
