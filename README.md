@@ -29,22 +29,22 @@ void loop() {
 Toggle button mode (will automatically disable push button modes):
 
 ```cpp
-onToggle()
+onToggle();
 ```
 
 Push button mode (won't work if onToogle is invoked):
 
 ```cpp
-onSinglePress()
-onDoublePress()
-onTripplePress()
-onLongPress()
+onSinglePress();
+onDoublePress();
+onTripplePress();
+onLongPress();
 ```
 
 Live repeat key press detection (won't work if onToogle is invoked):
 
 ```cpp
-onRepeatPress()
+onRepeatPress();
 ```
 
 ## Dependencies
