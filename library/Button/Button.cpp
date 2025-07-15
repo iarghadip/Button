@@ -26,10 +26,6 @@ Button::Button(
  */
 void Button::begin() {
     pinMode(_GPIO, INPUT_PULLUP);
-    if (_onToggle) {
-        _wasPressed = digitalRead(_GPIO) == LOW;
-        _onToggle(_wasPressed);
-    }
 }
 
 /**
@@ -59,7 +55,8 @@ void Button::async() {
     unsigned long now = millis();
     unsigned long nlrt = now - _lastReleaseTime;
     if (_onToggle) {
-        if (isPressed != _wasPressed) {
+        if (!_wasInitialized || isPressed != _wasPressed) {
+            _wasInitialized = true;
             _wasPressed = isPressed;
             _onToggle(isPressed);
         }

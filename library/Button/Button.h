@@ -130,6 +130,7 @@ class Button {
 
     private:
         uint8_t _GPIO; // Internal hardware configuration pin.
+        bool _wasInitialized = false; // Internal flag indicating toggle initial state.
         bool _wasPressed = false; // Internal flag indicating previous press state.
         unsigned long _pressStartTime = 0; // Internal timestamp for button press.
         unsigned long _lastReleaseTime = 0; // Internal timestamp for button release.
