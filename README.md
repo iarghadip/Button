@@ -7,28 +7,44 @@ PlatformIO-based asynchronous button for ESP32 built on Arduino framework.
 ```cpp
 Button button(0); // GPIO 0 for ESP32 Devkit BOOT button.
 
-void setOnPress() {
-    // Invoke the callback functions to handle presses.
+void setup() {
+    Serial.begin(115200);
+
+    button.begin(); // Invoke the begin function once for calibration.
+    // button.begin(0); // GPIO can be initialized here as well.
+
+    // Invoke a relevant callback function to handle presses.
     button.onSinglePress([]() {
         Serial.println("onSinglePress");
     });
-    button.onDoublePress([]() {
-        Serial.println("onDoublePress");
-    });
-    button.onLongPress([]() {
-        Serial.println("onLongPress");
-    });
-}
-
-void setup() {
-    Serial.begin(115200);
-    button.begin(); // Invoke the begin function once for calibration.
-    setOnPress();
 }
 
 void loop() {
     button.async(); // Invoke the async function inside the RTOS loop.
 }
+```
+
+## Functions
+
+Toggle button mode (will automatically disable push button modes):
+
+```cpp
+onToggle()
+```
+
+Push button mode (won't work if onToogle is invoked):
+
+```cpp
+onSinglePress()
+onDoublePress()
+onTripplePress()
+onLongPress()
+```
+
+Live repeat key press detection (won't work if onToogle is invoked):
+
+```cpp
+onRepeatPress()
 ```
 
 ## Dependencies

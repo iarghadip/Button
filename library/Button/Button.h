@@ -95,6 +95,17 @@ class Button {
         );
 
         /**
+         * @brief Register a callback for a tripple button press event.
+         *
+         * The callback is invoked when three short presses occur within the configured tripple press timeout.
+         *
+         * @param onTripplePress Callback function to invoke on a tripple press.
+         */
+        void onTripplePress(
+            std::function<void()> onTripplePress
+        );
+
+        /**
          * @brief Register a callback for a long button press event.
          *
          * A long press is detected when the button is held down for more than the configured long press timeout.
@@ -105,17 +116,32 @@ class Button {
             std::function<void()> onLongPress
         );
 
+        /**
+         * @brief Register a callback for a repeated button press event while the button is held down.
+         *
+         * This callback is invoked continuously at a fixed interval as long as the button remains pressed.
+         * Useful for implementing key repeat behavior (e.g., holding down a key to input characters repeatedly).
+         *
+         * @param onRepeatPress Callback function to invoke repeatedly while the button is held down.
+         */
+        void onRepeatPress(
+            std::function<void()> onRepeatPress
+        );
+
     private:
         uint8_t _GPIO; // Internal hardware configuration pin.
         bool _wasPressed = false; // Internal flag indicating previous press state.
         unsigned long _pressStartTime = 0; // Internal timestamp for button press.
         unsigned long _lastReleaseTime = 0; // Internal timestamp for button release.
+        unsigned long _lastRepeatTime = 0; // Internal timestamp for last repeat callback.
         uint8_t _pressCount = 0; // Internal button press count.
 
         std::function<void(bool)> _onToggle; // Internal callback for onToggle.
         std::function<void()> _onSinglePress; // Internal callback for onSinglePress.
         std::function<void()> _onDoublePress; // Internal callback for onDoublePress.
+        std::function<void()> _onTripplePress; // Internal callback for onTripplePress.
         std::function<void()> _onLongPress; // Internal callback for onLongPress.
+        std::function<void()> _onRepeatPress; // Internal callback for onRepeatPress.
 };
 
 #endif // Button_h

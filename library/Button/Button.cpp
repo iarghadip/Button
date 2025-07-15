@@ -55,9 +55,9 @@ void Button::begin(
  * Call this function inside your main loop to ensure button events are handled asynchronously.
  */
 void Button::async() {
-
     bool isPressed = digitalRead(_GPIO) == LOW;
-
+    unsigned long now = millis();
+    unsigned long nlrt = now - _lastReleaseTime;
     if (_onToggle) {
         if (isPressed != _wasPressed) {
             _wasPressed = isPressed;
@@ -65,10 +65,6 @@ void Button::async() {
         }
         return;
     }
-
-    unsigned long now = millis();
-    unsigned long nlrt = now - _lastReleaseTime;
-
     if (isPressed && !_wasPressed) {
         _pressStartTime = now;
         _wasPressed = true;
@@ -78,11 +74,18 @@ void Button::async() {
                 if (_onDoublePress) {
                     _onDoublePress();
                 }
+            }
+        }
+        if (nlrt <= TRIPLE_PRESS_TIMEOUT) {
+            if (_pressCount == 3) {
+                if (_onTripplePress) {
+                    _onTripplePress();
+                }
                 _pressCount = 0;
             }
         }
+        _lastRepeatTime = now;
     }
-
     if (!isPressed && _wasPressed) {
         unsigned long npst = now - _pressStartTime;
         if (npst < LONG_PRESS_TIMEOUT) {
@@ -98,13 +101,18 @@ void Button::async() {
         }
         _wasPressed = false;
     }
-
     if (_pressCount == 1 && !isPressed) {
         if (nlrt > DOUBLE_PRESS_TIMEOUT) {
             if (_onSinglePress) {
                 _onSinglePress();
             }
             _pressCount = 0;
+        }
+    }
+    if (isPressed && _onRepeatPress) {
+        if (now - _lastRepeatTime >= REPREAT_PRESS_INTERVAL) {
+            _onRepeatPress();
+            _lastRepeatTime = now;
         }
     }
 }
